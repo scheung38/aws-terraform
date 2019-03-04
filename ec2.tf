@@ -59,6 +59,15 @@ resource "aws_security_group" "sec_web" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  egress {
+    from_port = 8883
+    protocol = "tcp"
+    to_port = 8883
+    cidr_blocks = [
+      "0.0.0.0/0"]
+  }
+
   lifecycle {
     create_before_destroy = true
   }
@@ -67,7 +76,15 @@ resource "aws_security_group" "sec_web" {
 resource "aws_security_group" "sec_lb" {
   name = "sec_elb"
   vpc_id      = "${aws_vpc.default.id}"
-  
+
+  egress {
+    from_port = 8883
+    protocol = "tcp"
+    to_port = 8883
+    cidr_blocks = [
+      "0.0.0.0/0"]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
