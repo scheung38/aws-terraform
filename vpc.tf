@@ -57,30 +57,30 @@ resource "aws_subnet" "PrivateSubnetC" {
  availability_zone = "${data.aws_availability_zones.available.names[2]}"
 }
 
-resource "aws_route_table_association" "PublicSubnetA" {
-    subnet_id = "${aws_subnet.PublicSubnetA.id}"
-    route_table_id = "${aws_route_table.public_route_a.id}"
-}
-resource "aws_route_table_association" "PublicSubnetB" {
-    subnet_id = "${aws_subnet.PublicSubnetB.id}"
-    route_table_id = "${aws_route_table.public_route_b.id}"
-}
-resource "aws_route_table_association" "PublicSubnetC" {
-    subnet_id = "${aws_subnet.PublicSubnetC.id}"
-    route_table_id = "${aws_route_table.public_route_c.id}"
-}
-resource "aws_route_table_association" "PrivateSubnetA" {
-    subnet_id = "${aws_subnet.PrivateSubnetA.id}"
-    route_table_id = "${aws_route_table.private_route_a.id}"
-}
-resource "aws_route_table_association" "PrivateSubnetB" {
-    subnet_id = "${aws_subnet.PrivateSubnetB.id}"
-    route_table_id = "${aws_route_table.private_route_b.id}"
-}
-resource "aws_route_table_association" "PrivateSubnetC" {
-    subnet_id = "${aws_subnet.PrivateSubnetC.id}"
-    route_table_id = "${aws_route_table.private_route_c.id}"
-}
+//resource "aws_route_table_association" "PublicSubnetA" {
+//    subnet_id = "${aws_subnet.PublicSubnetA.id}"
+//    route_table_id = "${aws_route_table.public_route_a.id}"
+//}
+//resource "aws_route_table_association" "PublicSubnetB" {
+//    subnet_id = "${aws_subnet.PublicSubnetB.id}"
+//    route_table_id = "${aws_route_table.public_route_b.id}"
+//}
+//resource "aws_route_table_association" "PublicSubnetC" {
+//    subnet_id = "${aws_subnet.PublicSubnetC.id}"
+//    route_table_id = "${aws_route_table.public_route_c.id}"
+//}
+//resource "aws_route_table_association" "PrivateSubnetA" {
+//    subnet_id = "${aws_subnet.PrivateSubnetA.id}"
+//    route_table_id = "${aws_route_table.private_route_a.id}"
+//}
+//resource "aws_route_table_association" "PrivateSubnetB" {
+//    subnet_id = "${aws_subnet.PrivateSubnetB.id}"
+//    route_table_id = "${aws_route_table.private_route_b.id}"
+//}
+//resource "aws_route_table_association" "PrivateSubnetC" {
+//    subnet_id = "${aws_subnet.PrivateSubnetC.id}"
+//    route_table_id = "${aws_route_table.private_route_c.id}"
+//}
 
 resource "aws_internet_gateway" "gw" {
    vpc_id = "${aws_vpc.default.id}"
@@ -97,21 +97,21 @@ resource "aws_eip" "natgw_b" {
 resource "aws_eip" "natgw_c" {
     vpc      = true
 }
-resource "aws_nat_gateway" "public_nat_a" {
-    allocation_id = "${aws_eip.natgw_a.id}"
-    subnet_id = "${aws_subnet.PublicSubnetA.id}"
-    depends_on = ["aws_internet_gateway.gw"]
-}
-resource "aws_nat_gateway" "public_nat_b" {
-    allocation_id = "${aws_eip.natgw_b.id}"
-    subnet_id = "${aws_subnet.PublicSubnetB.id}"
-    depends_on = ["aws_internet_gateway.gw"]
-}
-resource "aws_nat_gateway" "public_nat_c" {
-    allocation_id = "${aws_eip.natgw_c.id}"
-    subnet_id = "${aws_subnet.PublicSubnetC.id}"
-    depends_on = ["aws_internet_gateway.gw"]
-}
+//resource "aws_nat_gateway" "public_nat_a" {
+//    allocation_id = "${aws_eip.natgw_a.id}"
+//    subnet_id = "${aws_subnet.PublicSubnetA.id}"
+//    depends_on = ["aws_internet_gateway.gw"]
+//}
+//resource "aws_nat_gateway" "public_nat_b" {
+//    allocation_id = "${aws_eip.natgw_b.id}"
+//    subnet_id = "${aws_subnet.PublicSubnetB.id}"
+//    depends_on = ["aws_internet_gateway.gw"]
+//}
+//resource "aws_nat_gateway" "public_nat_c" {
+//    allocation_id = "${aws_eip.natgw_c.id}"
+//    subnet_id = "${aws_subnet.PublicSubnetC.id}"
+//    depends_on = ["aws_internet_gateway.gw"]
+//}
 
 resource "aws_network_acl" "all" {
    vpc_id = "${aws_vpc.default.id}"
@@ -136,63 +136,63 @@ resource "aws_network_acl" "all" {
     }
 }
 
-resource "aws_route_table" "public_route_a" {
-  vpc_id = "${aws_vpc.default.id}"
-  tags {
-      Name = "Public Route A"
-  }
-  route {
-        cidr_block = "0.0.0.0/0"
-        gateway_id = "${aws_internet_gateway.gw.id}"
-    }
-}
-resource "aws_route_table" "public_route_b" {
-  vpc_id = "${aws_vpc.default.id}"
-  tags {
-      Name = "Public Route B"
-  }
-  route {
-        cidr_block = "0.0.0.0/0"
-        gateway_id = "${aws_internet_gateway.gw.id}"
-    }
-}
-resource "aws_route_table" "public_route_c" {
-  vpc_id = "${aws_vpc.default.id}"
-  tags {
-      Name = "Public Route C"
-  }
-  route {
-        cidr_block = "0.0.0.0/0"
-        gateway_id = "${aws_internet_gateway.gw.id}"
-    }
-}
-resource "aws_route_table" "private_route_a" {
-  vpc_id = "${aws_vpc.default.id}"
-  tags {
-      Name = "Private Route A"
-  }
-  route {
-        cidr_block = "0.0.0.0/0"
-        nat_gateway_id = "${aws_nat_gateway.public_nat_a.id}"
-  }
-}
-resource "aws_route_table" "private_route_b" {
-  vpc_id = "${aws_vpc.default.id}"
-  tags {
-      Name = "Private Route B"
-  }
-  route {
-        cidr_block = "0.0.0.0/0"
-        nat_gateway_id = "${aws_nat_gateway.public_nat_b.id}"
-  }
-}
-resource "aws_route_table" "private_route_c" {
-  vpc_id = "${aws_vpc.default.id}"
-  tags {
-      Name = "Private Route C"
-  }
-  route {
-        cidr_block = "0.0.0.0/0"
-        nat_gateway_id = "${aws_nat_gateway.public_nat_c.id}"
-  }
-}
+//resource "aws_route_table" "public_route_a" {
+//  vpc_id = "${aws_vpc.default.id}"
+//  tags {
+//      Name = "Public Route A"
+//  }
+//  route {
+//        cidr_block = "0.0.0.0/0"
+//        gateway_id = "${aws_internet_gateway.gw.id}"
+//    }
+//}
+//resource "aws_route_table" "public_route_b" {
+//  vpc_id = "${aws_vpc.default.id}"
+//  tags {
+//      Name = "Public Route B"
+//  }
+//  route {
+//        cidr_block = "0.0.0.0/0"
+//        gateway_id = "${aws_internet_gateway.gw.id}"
+//    }
+//}
+//resource "aws_route_table" "public_route_c" {
+//  vpc_id = "${aws_vpc.default.id}"
+//  tags {
+//      Name = "Public Route C"
+//  }
+//  route {
+//        cidr_block = "0.0.0.0/0"
+//        gateway_id = "${aws_internet_gateway.gw.id}"
+//    }
+//}
+//resource "aws_route_table" "private_route_a" {
+//  vpc_id = "${aws_vpc.default.id}"
+//  tags {
+//      Name = "Private Route A"
+//  }
+//  route {
+//        cidr_block = "0.0.0.0/0"
+//        nat_gateway_id = "${aws_nat_gateway.public_nat_a.id}"
+//  }
+//}
+//resource "aws_route_table" "private_route_b" {
+//  vpc_id = "${aws_vpc.default.id}"
+//  tags {
+//      Name = "Private Route B"
+//  }
+//  route {
+//        cidr_block = "0.0.0.0/0"
+//        nat_gateway_id = "${aws_nat_gateway.public_nat_b.id}"
+//  }
+//}
+//resource "aws_route_table" "private_route_c" {
+//  vpc_id = "${aws_vpc.default.id}"
+//  tags {
+//      Name = "Private Route C"
+//  }
+//  route {
+//        cidr_block = "0.0.0.0/0"
+//        nat_gateway_id = "${aws_nat_gateway.public_nat_c.id}"
+//  }
+//}

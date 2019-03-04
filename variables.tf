@@ -5,7 +5,7 @@ Ensure this keypair is added to your local SSH agent so provisioners can
 connect.
 Example: ~/.ssh/terraform.pub
 DESCRIPTION
-   default = "/home/berndonline/.ssh/id_rsa.pub"
+   default = "/Users/mincheung/.ssh/id_rsa_github_seb.pub"
 }
 variable "key_name" {
   description = "Desired name of AWS key pair"
@@ -17,8 +17,9 @@ variable "aws_region" {
 }
 # Ubuntu Precise 16.04 LTS (x64)
 variable "aws_amis" {
+  type = "map"
   default = {
-    eu-west-1 = "ami-58d7e821"
+    "eu-west-1" = "ami-0fad7378adf284ce0"
   }
 }
 variable "dnszonename" {
